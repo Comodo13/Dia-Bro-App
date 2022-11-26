@@ -42,7 +42,7 @@ class HfireService(
         val entries = map["entry"] as ArrayList<LinkedHashMap<String, String>>
         val result = mutableListOf<Prescription>()
 
-        val entriesFirst = entries.takeLast(5) //iterate through lately results
+        val entriesFirst = entries.takeLast(3) //iterate through lately results
         entriesFirst.forEach {
             val resource = it.get("resource") as LinkedHashMap<String, String>
             val prescript = resource.get("medicationCodeableConcept") as LinkedHashMap<String, String>
@@ -83,7 +83,7 @@ class HfireService(
         val map = readMapFromHfire(id, apiChunk)
         val entries = map["entry"] as ArrayList<LinkedHashMap<String, String>>
         entries.removeAt(0)
-        val entriesFirst = entries.takeLast(5)    //iterate through lately results
+        val entriesFirst = entries.takeLast(2)    //iterate through lately results
         entriesFirst.forEach {
             val resource = it.get("resource") as LinkedHashMap<String, String>
             val result = resource.get("result") as ArrayList<LinkedHashMap<String, String>>
@@ -107,7 +107,7 @@ class HfireService(
         val map = readMapFromHfire(id, apiChunk)
         val entries = map["entry"] as ArrayList<LinkedHashMap<String, String>>
         val encounters = mutableListOf<Encounter>()
-        val entriesLast = entries.takeLast(5)
+        val entriesLast = entries.takeLast(4)
         entriesLast.forEach {
             val resource = it.get("resource") as LinkedHashMap<String, String>
             val participant = resource.get("participant") as ArrayList<LinkedHashMap<String, String>>

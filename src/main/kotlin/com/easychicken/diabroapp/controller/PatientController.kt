@@ -4,7 +4,7 @@ import com.easychicken.diabroapp.controller.service.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-@CrossOrigin(origins = ["http://localhost:8080"])
+@CrossOrigin
 @RestController
 @RequestMapping("/patient")
 class PatientController(
