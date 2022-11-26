@@ -2,17 +2,14 @@ package com.easychicken.diabroapp.controller
 
 import com.easychicken.diabroapp.controller.service.*
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
+@CrossOrigin(origins = ["http://localhost:8080"])
 @RestController
 @RequestMapping("/patient")
 class PatientController(
     private val hfireService: HfireService
 ) {
-
 
     @GetMapping("/{id}")
     fun getPatientById(@PathVariable id: Int): ResponseEntity<Patient> {

@@ -106,7 +106,8 @@ class HfireService(
         val map = readMapFromHfire(id, apiChunk)
         val entries = map["entry"] as ArrayList<LinkedHashMap<String, String>>
         val encounters = mutableListOf<Encounter>()
-        entries.forEach {
+        val entriesLast = entries.takeLast(5)
+        entriesLast.forEach {
             val resource = it.get("resource") as LinkedHashMap<String, String>
             val participant = resource.get("participant") as ArrayList<LinkedHashMap<String, String>>
             val individualMap = participant[0] as LinkedHashMap<String, String>
