@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/patient/")
+@RequestMapping("/patient")
 class PatientController(
     private val hfireService: HfireService
 ) {
@@ -27,6 +27,6 @@ class PatientController(
     }
     @GetMapping("/tests/{id}")
     fun getTestsByPatientId(@PathVariable id: Int): List<LabTest> {
-        return hfireService.getLaboratoryTestByPatientId(id, "/DiagnosticReport?patient")
+        return hfireService.getLaboratoryTestByPatientId(id, "/DiagnosticReport?patient=")
     }
 }

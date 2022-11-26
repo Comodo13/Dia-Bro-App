@@ -72,7 +72,7 @@ class HfireService(
     }
 
     fun getLaboratoryTestByPatientId(id: Int, apiChunk: String): List<LabTest> {
-        val interested = mutableListOf<String>()
+        val interested = mutableListOf<String>() //lab tests we are looking for
         interested.add("Total Cholesterol")
         interested.add("Low Density Lipoprotein Cholesterol")
         interested.add("High Density Lipoprotein Cholesterol")
@@ -105,9 +105,9 @@ class HfireService(
     fun readMapFromHfire(id: Int, apiChunk: String): MutableMap<Any, Any> {
         val headers = org.springframework.http.HttpHeaders()
         val requestEntity: HttpEntity<String> = HttpEntity(headers)
-        headers.set("x-api-key", "VcD8Kvmx4M7HqrdaJZdCbF7gTBRdtdJ6fbzXvEj2")
+        headers.set("x-api-key", "vgeSEbV3yt1nO7BQShriO4GAnW6an7cr6dtYLxVJ")
         val response: ResponseEntity<String> = restTemplate.exchange(
-            "https://fhir.5fzoggga80as.static-test-account.isccloud.io$apiChunk$id",
+            "https://fhir.nbefgrb0enyf.static-test-account.isccloud.io$apiChunk$id",
             HttpMethod.GET,
             requestEntity
         )
