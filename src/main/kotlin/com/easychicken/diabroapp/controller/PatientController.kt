@@ -1,9 +1,6 @@
 package com.easychicken.diabroapp.controller
 
-import com.easychicken.diabroapp.controller.service.HfireService
-import com.easychicken.diabroapp.controller.service.LabTest
-import com.easychicken.diabroapp.controller.service.Patient
-import com.easychicken.diabroapp.controller.service.Prescription
+import com.easychicken.diabroapp.controller.service.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -28,5 +25,9 @@ class PatientController(
     @GetMapping("/tests/{id}")
     fun getTestsByPatientId(@PathVariable id: Int): List<LabTest> {
         return hfireService.getLaboratoryTestByPatientId(id, "/DiagnosticReport?patient=")
+    }
+    @GetMapping("/encounters/{id}")
+    fun getAppointmentsByPatientId(@PathVariable id: Int):  List<Encounter>  {
+        return hfireService.getAppointmentsByPatientId(id, "/Encounter?patient=")
     }
 }

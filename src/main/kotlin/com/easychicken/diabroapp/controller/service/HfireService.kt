@@ -41,7 +41,8 @@ class HfireService(
         val entries = map["entry"] as ArrayList<LinkedHashMap<String, String>>
         val result = mutableListOf<Prescription>()
 
-        entries.forEach {
+        val entriesFirst = entries.takeLast(5) //iterate through lately results
+        entriesFirst.forEach {
             val resource = it.get("resource") as LinkedHashMap<String, String>
             val prescript = resource.get("medicationCodeableConcept") as LinkedHashMap<String, String>
             val coding = prescript.get("coding") as ArrayList<String>
@@ -81,7 +82,8 @@ class HfireService(
         val map = readMapFromHfire(id, apiChunk)
         val entries = map["entry"] as ArrayList<LinkedHashMap<String, String>>
         entries.removeAt(0)
-        entries.forEach {
+        val entriesFirst = entries.takeLast(5)    //iterate through lately results
+        entriesFirst.forEach {
             val resource = it.get("resource") as LinkedHashMap<String, String>
             val result = resource.get("result") as ArrayList<LinkedHashMap<String, String>>
             result.forEach {
@@ -100,7 +102,24 @@ class HfireService(
         }
         return tests
     }
-
+    fun getAppointmentsByPatientId(id: Int, apiChunk: String) : List<Encounter> {
+        val map = readMapFromHfire(id, apiChunk)
+        val entries = map["entry"] as ArrayList<LinkedHashMap<String, String>>
+        val encounters = mutableListOf<Encounter>()
+        entries.forEach {
+            val resource = it.get("resource") as LinkedHashMap<String, String>
+            val participant = resource.get("participant") as ArrayList<LinkedHashMap<String, String>>
+            val individualMap = participant[0] as LinkedHashMap<String, String>
+            val individual = individualMap.get("individual") as LinkedHashMap<String, String>
+            val displayDoctor = individual.get("display")
+            val period = resource.get("period") as LinkedHashMap<String, String>
+            val start = period.get("start")
+            val serviceProvider = resource.get("serviceProvider") as LinkedHashMap<String, String>
+            val displayHospital = serviceProvider.get("display")
+            encounters.add(Encounter(displayDoctor, displayHospital, start))
+        }
+        return encounters
+    }
 
     fun readMapFromHfire(id: Int, apiChunk: String): MutableMap<Any, Any> {
         val headers = org.springframework.http.HttpHeaders()
@@ -138,4 +157,10 @@ data class Patient(
     val fullName: String,
     val dateOfBirth: String,
     val gender: String,
+)
+
+data class Encounter(
+    val doctorName: String?,
+    val hospitalName: String?,
+    val start: String?
 )
