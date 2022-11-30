@@ -97,7 +97,7 @@ class HfireService(
                     val time = map.get("effectiveDateTime")
                     val value = observationResult.get("value") as Double
                     val unit = observationResult.get("unit")
-                    tests.add(LabTest(display,unit,value, time.toString()))
+                    tests.add(LabTest(display, unit, value, time.toString()))
                 }
             }
         }
@@ -154,9 +154,9 @@ class HfireService(
     fun readMapFromHfire(id: Int, apiChunk: String): MutableMap<Any, Any> {
         val headers = org.springframework.http.HttpHeaders()
         val requestEntity: HttpEntity<String> = HttpEntity(headers)
-        headers.set("x-api-key", "vgeSEbV3yt1nO7BQShriO4GAnW6an7cr6dtYLxVJ")
+        headers.set("x-api-key", "KfMlVLHZy52fnMC2DeaVp0EVMLjVbTG5gNTLAlQ4")
         val response: ResponseEntity<String> = restTemplate.exchange(
-            "https://fhir.nbefgrb0enyf.static-test-account.isccloud.io$apiChunk$id",
+            "https://fhir.rxmtxux4mj3c.static-test-account.isccloud.io$apiChunk$id",
             HttpMethod.GET,
             requestEntity
         )
@@ -165,6 +165,7 @@ class HfireService(
         return ObjectMapper().readValue<MutableMap<Any, Any>>(json)
     }
 }
+
 data class LabTest(
     val name: String?,
     val unit: String?,
