@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.client.exchange
+import java.time.Instant
 
 @Service
 class HfireService(
@@ -121,6 +122,34 @@ class HfireService(
         }
         return encounters
     }
+    fun getDevicesByPatientId(id: Int): List<Device> {
+        return listOf(
+            Device("DexCom 6G", Instant.now().minusMillis(40000000)),
+            Device("Smart Insulin Pen", Instant.now().minusMillis(40000000)),
+            Device("Insulin Pump", Instant.now().minusMillis(40000000))
+        )
+    }
+
+    fun getLastTenGlucoseObservations(id: Int): List<GlucoseObservation> {
+        return listOf(
+            GlucoseObservation(4.5, Instant.now()),
+            GlucoseObservation(4.6, Instant.now().minusMillis(3600000)),
+            GlucoseObservation(4.7, Instant.now().minusMillis(3600000*2)),
+            GlucoseObservation(4.9, Instant.now().minusMillis(3600000*3)),
+            GlucoseObservation(4.8, Instant.now().minusMillis(3600000*4)),
+            GlucoseObservation(5.0, Instant.now().minusMillis(3600000*5)),
+            GlucoseObservation(4.6, Instant.now().minusMillis(3600000*6)),
+            GlucoseObservation(4.3, Instant.now().minusMillis(3600000*7)),
+            GlucoseObservation(4.0, Instant.now().minusMillis(3600000*8)),
+            GlucoseObservation(4.6, Instant.now().minusMillis(3600000*9)),
+            GlucoseObservation(4.9, Instant.now().minusMillis(3600000*10)),
+        )
+    }
+
+    fun recordGlucoseObservation(id: Int, glucose: GlucoseObservation): GlucoseObservation {
+        return glucose
+    }
+
 
     fun readMapFromHfire(id: Int, apiChunk: String): MutableMap<Any, Any> {
         val headers = org.springframework.http.HttpHeaders()
@@ -164,4 +193,14 @@ data class Encounter(
     val doctorName: String?,
     val hospitalName: String?,
     val start: String?
+)
+
+data class Device(
+    val name: String,
+    val dateActivted: Instant? = null
+)
+
+data class GlucoseObservation(
+    val value: Double,
+    val time: Instant
 )

@@ -27,4 +27,19 @@ class PatientController(
     fun getAppointmentsByPatientId(@PathVariable id: Int):  List<Encounter>  {
         return hfireService.getAppointmentsByPatientId(id, "/Encounter?patient=")
     }
+
+    @GetMapping("/devices/{id}")
+    fun getDevicesByPatientId(@PathVariable id: Int):  List<Device>  {
+        return hfireService.getDevicesByPatientId(id)
+    }
+
+    @GetMapping("/glucoses/{id}")
+    fun getLastGlucoseByPatientId(@PathVariable id: Int):  List<GlucoseObservation>  {
+        return hfireService.getLastTenGlucoseObservations(id)
+    }
+
+    @PostMapping("/recordglucose/{id}")
+    fun recordLastGlucoseByPatientId(@PathVariable id: Int, @RequestBody glucose: GlucoseObservation):  GlucoseObservation  {
+        return hfireService.recordGlucoseObservation(id, glucose)
+    }
 }
