@@ -1,4 +1,4 @@
-package com.easychicken.diabroapp.controller.service
+package com.easychicken.diabroapp.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue

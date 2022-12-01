@@ -1,0 +1,11 @@
+#spring:
+#  jpa:
+#    database-platform: org.hibernate.dialect.InterSystemsIRISDialect
+#    show-sql: true
+#  hibernate:
+#    ddl-auto: update
+#  datasource:
+#    url: jdbc:IRIS://localhost:52773/USER
+#    username: SuperUser
+#    password: alkash13
+#    driver-class-name: com.intersystems.jdbc.IRISDriver

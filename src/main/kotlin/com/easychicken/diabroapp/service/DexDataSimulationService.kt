@@ -1,4 +1,4 @@
-package com.easychicken.diabroapp.controller.service
+package com.easychicken.diabroapp.service
 
 import org.springframework.stereotype.Service
 
