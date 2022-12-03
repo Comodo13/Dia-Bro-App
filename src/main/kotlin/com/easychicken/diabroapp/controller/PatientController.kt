@@ -13,7 +13,7 @@ class PatientController(
     private val irisService: IRISservice,
     private val hfirSimulationService: HfirSimulationService,
 
-) {
+    ) {
 
 //    @GetMapping("/{id}")
 //    fun getPatientById(@PathVariable id: Int): ResponseEntity<Patient> {
@@ -38,65 +38,76 @@ class PatientController(
 //    }
 
     @GetMapping("/glucoses/{id}")
-    fun getLastGlucoseByPatientId(@PathVariable id: Int):  List<GlucoseObservation>  {
+    fun getLastGlucoseByPatientId(@PathVariable id: Int): List<GlucoseObservation> {
         return hfireService.getLastTenGlucoseObservations(id)
     }
 
     @PostMapping("/recordglucose/{id}")
-    fun recordLastGlucoseByPatientId(@PathVariable id: Int, @RequestBody glucose: GlucoseObservation):  GlucoseObservation  {
+    fun recordLastGlucoseByPatientId(
+        @PathVariable id: Int,
+        @RequestBody glucose: GlucoseObservation
+    ): GlucoseObservation {
         return hfireService.recordGlucoseObservation(id, glucose)
     }
 
     //IRIS
     @GetMapping("/con/")
-    fun getconn(): String  {
+    fun getconn(): String {
         irisService.getConnection()
-        return  "ok"
+        return "ok"
     }
 
     @GetMapping("/creat/")
-    fun createTablePat():  String  {
+    fun createTablePat(): String {
         irisService.createPatientTable()
-        return  "patient created"
+        return "patient created"
     }
+
     @GetMapping("/creatnot/")
-    fun createTablePatNot():  String  {
+    fun createTablePatNot(): String {
         irisService.createPatienNotestTable()
-        return  "notes table created"
+        return "notes table created"
     }
+
     @GetMapping("/insulintable/")
-    fun createTablePatInsulin():  String  {
+    fun createTablePatInsulin(): String {
         irisService.createInsulinTable()
-        return  "insulin table created"
+        return "insulin table created"
     }
+
     @PostMapping("/po")
-    fun insertPatient( @RequestBody patient: Patient): String  {
+    fun insertPatient(@RequestBody patient: Patient): String {
         irisService.insertPatient(patient)
-        return  "created"
+        return "created"
     }
+
     @PostMapping("/note")
-    fun createPatientNote(@RequestBody note: PatientNoteCreateRequest): String  {
+    fun createPatientNote(@RequestBody note: PatientNoteCreateRequest): String {
         irisService.insertPatientNote(note)
-        return  "created"
+        return "created"
     }
+
     @PostMapping("/insulin/record")
-    fun createInsulinRecord(@RequestBody record: InsulinCreateRequest): String  {
+    fun createInsulinRecord(@RequestBody record: InsulinCreateRequest): String {
         irisService.insertInsulin(record)
-        return  "created"
+        return "created"
     }
 
     @GetMapping("/irispat/{id}")
     fun getIrisPatientById(@PathVariable id: Int): ResponseEntity<Patient> {
         return ResponseEntity.ok(irisService.getPatientById(id))
     }
+
     @GetMapping("/irisnote/{id}")
     fun getIrisPatientNotesByPatientId(@PathVariable id: Int): ResponseEntity<List<PatientNote>> {
         return ResponseEntity.ok(irisService.getPatientNotesByPatientId(id))
     }
+
     @GetMapping("/all")
     fun getIrisPatients(): ResponseEntity<List<Patient>> {
         return ResponseEntity.ok(irisService.getAllPatients())
     }
+
     @GetMapping("/insulin/{id}")
     fun getInsulinByPatientId(@PathVariable id: Int): ResponseEntity<List<InsulinRecord>> {
         return ResponseEntity.ok(irisService.getInsulinRecordsByPatientId(id))
@@ -139,7 +150,7 @@ class PatientController(
     }
 
     @GetMapping("/meds/{id}")
-    fun meds(): Element{
+    fun meds(): Element {
         val presc = hfirSimulationService.getPatientPrescriptions(1)
         return Element(
             title = "Meds",
@@ -172,7 +183,7 @@ class PatientController(
                         TextHeader(
                             textHeader = "Date of prescription",
                             textContent = "12/01/2021"
-                    )
+                        )
                     )
                 ),
                 Content(
@@ -209,7 +220,7 @@ class PatientController(
     }
 
     @GetMapping("/encounters/{id}")
-    fun encounters(): Element{
+    fun encounters(): Element {
         val encounters = hfirSimulationService.patientEncounters(1)
         return Element(
             title = "Doctors",
@@ -237,7 +248,7 @@ class PatientController(
                         )
                     ),
 
-                ),
+                    ),
                 Content(
                     header = "Eye exam",
                     icon = null,
@@ -407,7 +418,7 @@ class PatientController(
 
     @GetMapping("/tests/{id}")
     fun getTestsByPatientIdContent(@PathVariable id: Int): Element {
-       // val tests = hfireService.getLaboratoryTestByPatientId(id, "/DiagnosticReport?patient=")
+        // val tests = hfireService.getLaboratoryTestByPatientId(id, "/DiagnosticReport?patient=")
         return Element(
             title = "Doctors",
             headerContent = "Prescriptions",
@@ -441,8 +452,9 @@ class PatientController(
             )
         )
     }
+
     @GetMapping("/today/{id}")
-    fun dashBoardForPatient(@PathVariable id: Int) : Element{
+    fun dashBoardForPatient(@PathVariable id: Int): Element {
         return Element(
             title = "Today",
             headerContent = "",
@@ -485,7 +497,7 @@ class PatientController(
                             textContent = "General Hospital"
                         )
                     )
-            ),
+                ),
                 Content(
                     header = "Stay Don't forget to take your medications",
                     icon = null,
@@ -528,8 +540,9 @@ class PatientController(
             contents = listOf()
         )
     }
+
     @GetMapping("/babyJournal/{id}")
-    fun babyJournal(@PathVariable id: Int) : Element{
+    fun babyJournal(@PathVariable id: Int): Element {
         return Element(
             title = "Baby journal",
             headerContent = "Prescriptions",
@@ -564,11 +577,11 @@ class PatientController(
         )
     }
 
-data class GraphNode(
-   val pointName:String,
-    val uv:Int,
-   val  pv:Int,
-)
+    data class GraphNode(
+        val pointName: String,
+        val uv: Int,
+        val pv: Int,
+    )
 
 
 //
@@ -590,11 +603,12 @@ data class GraphNode(
     data class Element(
         val title: String,
         val headerContent: String,
-        val create:String,
+        val create: String,
         val contents: List<Content>,
         val graph: List<GraphNode> = listOf()
-        
-        )
+
+    )
+
     data class Content(
         val header: String,
         val icon: String?,
@@ -603,11 +617,13 @@ data class GraphNode(
         val mark: Mark,
         val text: List<TextHeader>
     )
+
     data class Mark(
-        val header: String  = "green",
+        val header: String = "green",
         val text: String = "stone",
         val space: String = "spaceBetween"
     )
+
     data class TextHeader(
         val textHeader: String,
         val textContent: String,
