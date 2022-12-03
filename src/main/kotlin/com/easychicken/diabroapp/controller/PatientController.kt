@@ -10,7 +10,9 @@ import javax.el.ELManager
 @RequestMapping("/patient")
 class PatientController(
     private val hfireService: HfireService,
-    private val irisService: IRISservice
+    private val irisService: IRISservice,
+    private val hfirSimulationService: HfirSimulationService,
+
 ) {
 
 //    @GetMapping("/{id}")
@@ -138,13 +140,14 @@ class PatientController(
 
     @GetMapping("/meds/{id}")
     fun meds(): Element{
+        val presc = hfirSimulationService.getPatientPrescriptions(1)
         return Element(
             title = "Meds",
             headerContent = "Prescriptions",
             create = "Item",
             contents = listOf(
                 Content(
-                    header = "Hydrochlorothiadze 12.5 MG",
+                    header = presc[0].medicine ?: "",
                     icon = null,
                     btn = false,
                     border = true,
@@ -156,7 +159,7 @@ class PatientController(
                     text = listOf(
                         TextHeader(
                             textHeader = "Dosage:",
-                            textContent = "1 tablet"
+                            textContent = "${presc[0].medicine} tablet"
                         ),
                         TextHeader(
                             textHeader = "Times a day:",
@@ -171,6 +174,35 @@ class PatientController(
                             textContent = "12/01/2021"
                     )
                     )
+                ),
+                Content(
+                    header = presc[1].medicine ?: "",
+                    icon = null,
+                    btn = false,
+                    border = true,
+                    mark = Mark(
+                        header = "green",
+                        text = "red",
+                        space = "spaceAround",
+                    ),
+                    text = listOf(
+                        TextHeader(
+                            textHeader = "Dosage:",
+                            textContent = "${presc[1].medicine} tablet"
+                        ),
+                        TextHeader(
+                            textHeader = "Times a day:",
+                            textContent = "1"
+                        ),
+                        TextHeader(
+                            textHeader = "Prescribed by:",
+                            textContent = "Mr myself"
+                        ),
+                        TextHeader(
+                            textHeader = "Date of prescription",
+                            textContent = "12/01/2021"
+                        )
+                    )
                 )
             )
         )
@@ -178,25 +210,30 @@ class PatientController(
 
     @GetMapping("/encounters/{id}")
     fun encounters(): Element{
+        val encounters = hfirSimulationService.patientEncounters(1)
         return Element(
             title = "Doctors",
             headerContent = "Consultations",
             create = "Item",
             contents = listOf(
                 Content(
-                    header = "Doctors Exam",
+                    header = "Your next doctor",
                     icon = null,
                     btn = false,
                     border = true,
                     mark = Mark(
                         header = "green",
-                        text = "stone",
+                        text = "orange",
                         space = "spaceAround",
                     ),
                     text = listOf(
                         TextHeader(
-                            textHeader = "Last checked:",
-                            textContent = "17/01/2022"
+                            textHeader = "",
+                            textContent = encounters[0].start?.take(10) ?: ""
+                        ),
+                        TextHeader(
+                            textHeader = encounters[0].hospitalName ?: "",
+                            textContent = ""
                         )
                     ),
 
@@ -213,8 +250,8 @@ class PatientController(
                     ),
                     text = listOf(
                         TextHeader(
-                            textHeader = "Last checked:",
-                            textContent = "17/01/2022"
+                            textHeader = encounters[0].hospitalName ?: "",
+                            textContent = ""
                         )
                     ),
                 ),
@@ -473,39 +510,22 @@ class PatientController(
             )
         )
     }
+
     @GetMapping("/reports/{id}")
-    fun reportsForPatient(@PathVariable id: Int) : Element{
+    fun reportsForPatient(@PathVariable id: Int): Element {
+        val glucoses = hfireService.getLastTenGlucoseObservations(id)
         return Element(
             title = "Reports",
             headerContent = "Glucose",
             create = "Chart",
-            contents = listOf(
-                Content(
-                    header = "Doctors Exam",
-                    icon = null,
-                    btn = true,
-                    border = true,
-                    mark = Mark(
-                        header = "green",
-                        text = "stone",
-                        space = "spaceAround",
-                    ),
-                    text = listOf(
-                        TextHeader(
-                            textHeader = "Long Insulin",
-                            textContent = "UN"
-                        ),
-                        TextHeader(
-                            textHeader = "Long Insulin",
-                            textContent = "UN"
-                        ),
-                        TextHeader(
-                            textHeader = "Long Insulin",
-                            textContent = "UN"
-                        )
-                    )
+            graph = listOf(
+                GraphNode(
+                    pointName = "point",
+                    uv = 152,
+                    pv = 80
                 )
-            )
+            ),
+            contents = listOf()
         )
     }
     @GetMapping("/babyJournal/{id}")
@@ -544,7 +564,11 @@ class PatientController(
         )
     }
 
-
+data class GraphNode(
+   val pointName:String,
+    val uv:Int,
+   val  pv:Int,
+)
 
 
 //
@@ -567,7 +591,8 @@ class PatientController(
         val title: String,
         val headerContent: String,
         val create:String,
-        val contents: List<Content>
+        val contents: List<Content>,
+        val graph: List<GraphNode> = listOf()
         
         )
     data class Content(
