@@ -139,33 +139,37 @@ class PatientController(
     @GetMapping("/meds/{id}")
     fun meds(): Element{
         return Element(
-            title = "Doctors",
+            title = "Meds",
             headerContent = "Prescriptions",
             create = "Item",
             contents = listOf(
                 Content(
-                    header = "Doctors Exam",
+                    header = "Hydrochlorothiadze 12.5 MG",
                     icon = null,
-                    btn = true,
+                    btn = false,
                     border = true,
                     mark = Mark(
                         header = "green",
-                        text = "stone",
+                        text = "red",
                         space = "spaceAround",
                     ),
                     text = listOf(
                         TextHeader(
-                            textHeader = "Long Insulin",
-                            textContent = "UN"
+                            textHeader = "Dosage:",
+                            textContent = "1 tablet"
                         ),
                         TextHeader(
-                            textHeader = "Long Insulin",
-                            textContent = "UN"
+                            textHeader = "Times a day:",
+                            textContent = "1"
                         ),
                         TextHeader(
-                            textHeader = "Long Insulin",
-                            textContent = "UN"
-                        )
+                            textHeader = "Prescribed by:",
+                            textContent = "Mr myself"
+                        ),
+                        TextHeader(
+                            textHeader = "Date of prescription",
+                            textContent = "12/01/2021"
+                    )
                     )
                 )
             )
@@ -176,13 +180,13 @@ class PatientController(
     fun encounters(): Element{
         return Element(
             title = "Doctors",
-            headerContent = "Prescriptions",
+            headerContent = "Consultations",
             create = "Item",
             contents = listOf(
                 Content(
                     header = "Doctors Exam",
                     icon = null,
-                    btn = true,
+                    btn = false,
                     border = true,
                     mark = Mark(
                         header = "green",
@@ -191,18 +195,121 @@ class PatientController(
                     ),
                     text = listOf(
                         TextHeader(
-                            textHeader = "Long Insulin",
-                            textContent = "UN"
-                        ),
-                        TextHeader(
-                            textHeader = "Long Insulin",
-                            textContent = "UN"
-                        ),
-                        TextHeader(
-                            textHeader = "Long Insulin",
-                            textContent = "UN"
+                            textHeader = "Last checked:",
+                            textContent = "17/01/2022"
                         )
-                    )
+                    ),
+
+                ),
+                Content(
+                    header = "Eye exam",
+                    icon = null,
+                    btn = false,
+                    border = true,
+                    mark = Mark(
+                        header = "green",
+                        text = "orange",
+                        space = "spaceAround",
+                    ),
+                    text = listOf(
+                        TextHeader(
+                            textHeader = "Last checked:",
+                            textContent = "17/01/2022"
+                        )
+                    ),
+                ),
+                Content(
+                    header = "Influenza vaccine",
+                    icon = null,
+                    btn = false,
+                    border = true,
+                    mark = Mark(
+                        header = "green",
+                        text = "red",
+                        space = "spaceAround",
+                    ),
+                    text = listOf(
+                        TextHeader(
+                            textHeader = "Recomendation 1 per year",
+                            textContent = "0/1"
+                        )
+                    ),
+                ),
+                Content(
+                    header = "Triglyceride",
+                    icon = null,
+                    btn = false,
+                    border = true,
+                    mark = Mark(
+                        header = "green",
+                        text = "stone",
+                        space = "spaceBetween",
+                    ),
+                    text = listOf(
+                        TextHeader(
+                            textHeader = "Recomendation 1 per year",
+                            textContent = "1/1"
+                        ),
+                        TextHeader(
+                            textHeader = "Date of last test",
+                            textContent = "12/01/2021"
+                        ),
+                        TextHeader(
+                            textHeader = "Result",
+                            textContent = "134.61 mg/dL"
+                        )
+                    ),
+                ),
+                Content(
+                    header = "Total Cholesterol",
+                    icon = null,
+                    btn = false,
+                    border = true,
+                    mark = Mark(
+                        header = "green",
+                        text = "red",
+                        space = "spaceAround",
+                    ),
+                    text = listOf(
+                        TextHeader(
+                            textHeader = "Recomendation 1 per year",
+                            textContent = "0/1"
+                        )
+                    ),
+                ),
+                Content(
+                    header = "LDL Cholesterol",
+                    icon = null,
+                    btn = false,
+                    border = true,
+                    mark = Mark(
+                        header = "green",
+                        text = "red",
+                        space = "spaceAround",
+                    ),
+                    text = listOf(
+                        TextHeader(
+                            textHeader = "Recomendation 1 per year",
+                            textContent = "0/1"
+                        )
+                    ),
+                ),
+                Content(
+                    header = "HDL Cholesterol",
+                    icon = null,
+                    btn = false,
+                    border = true,
+                    mark = Mark(
+                        header = "green",
+                        text = "red",
+                        space = "spaceAround",
+                    ),
+                    text = listOf(
+                        TextHeader(
+                            textHeader = "Recomendation 1 per year",
+                            textContent = "0/1"
+                        )
+                    ),
                 )
             )
         )
@@ -216,27 +323,44 @@ class PatientController(
             create = "Item",
             contents = listOf(
                 Content(
-                    header = "Doctors Exam",
+                    header = "DEXCOM G6",
                     icon = null,
                     btn = true,
                     border = true,
                     mark = Mark(
                         header = "green",
-                        text = "stone",
-                        space = "spaceAround",
+                        text = "green",
+                        space = "spaceBetween",
                     ),
                     text = listOf(
                         TextHeader(
-                            textHeader = "Long Insulin",
-                            textContent = "UN"
+                            textHeader = "Remaining days:",
+                            textContent = "2/12/2022"
                         ),
                         TextHeader(
-                            textHeader = "Long Insulin",
-                            textContent = "UN"
+                            textHeader = "Installed on a date:",
+                            textContent = "12"
+                        )
+                    )
+                ),
+                Content(
+                    header = "Smart insulin pen",
+                    icon = null,
+                    btn = true,
+                    border = true,
+                    mark = Mark(
+                        header = "green",
+                        text = "green",
+                        space = "spaceBetween",
+                    ),
+                    text = listOf(
+                        TextHeader(
+                            textHeader = "Remaining days:",
+                            textContent = "2/12/2022"
                         ),
                         TextHeader(
-                            textHeader = "Long Insulin",
-                            textContent = "UN"
+                            textHeader = "Installed on a date:",
+                            textContent = "12"
                         )
                     )
                 )
@@ -260,7 +384,7 @@ class PatientController(
                     mark = Mark(
                         header = "green",
                         text = "stone",
-                        space = "spaceAround",
+                        space = "spaceBetween",
                     ),
                     text = listOf(
                         TextHeader(
@@ -293,7 +417,7 @@ class PatientController(
                     btn = false,
                     border = true,
                     mark = Mark(
-                        header = "orange",
+                        header = "green",
                         text = "stone",
                         space = "spaceAround",
                     ),
@@ -303,6 +427,48 @@ class PatientController(
                             textContent = "mmol/l"
                         )
                     )
+                ),
+                Content(
+                    header = "Your next doctor visit:",
+                    icon = null,
+                    btn = false,
+                    border = true,
+                    mark = Mark(
+                        header = "green",
+                        text = "stone",
+                        space = "spaceAround",
+                    ),
+                    text = listOf(
+                        TextHeader(
+                            textHeader = "12/12/2022",
+                            textContent = "11:45"
+                        ),
+                        TextHeader(
+                            textHeader = "Massachussets",
+                            textContent = "General Hospital"
+                        )
+                    )
+            ),
+                Content(
+                    header = "Stay Don't forget to take your medications",
+                    icon = null,
+                    btn = false,
+                    border = true,
+                    mark = Mark(
+                        header = "red",
+                        text = "green",
+                        space = "spaceBetween",
+                    ),
+                    text = listOf(
+                        TextHeader(
+                            textHeader = "",
+                            textContent = "Hydrochloorothiziade 12,5 MG"
+                        ),
+                        TextHeader(
+                            textHeader = "Mark as done",
+                            textContent = "Done"
+                        )
+                    )
                 )
             )
         )
@@ -310,9 +476,9 @@ class PatientController(
     @GetMapping("/reports/{id}")
     fun reportsForPatient(@PathVariable id: Int) : Element{
         return Element(
-            title = "Doctors",
-            headerContent = "Prescriptions",
-            create = "Item",
+            title = "Reports",
+            headerContent = "Glucose",
+            create = "Chart",
             contents = listOf(
                 Content(
                     header = "Doctors Exam",
@@ -345,7 +511,7 @@ class PatientController(
     @GetMapping("/babyJournal/{id}")
     fun babyJournal(@PathVariable id: Int) : Element{
         return Element(
-            title = "Doctors",
+            title = "Baby journal",
             headerContent = "Prescriptions",
             create = "Item",
             contents = listOf(
