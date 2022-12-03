@@ -36,18 +36,18 @@ class PatientController(
 //    fun getDevicesByPatientId(@PathVariable id: Int):  List<Device>  {
 //        return hfireService.getDevicesByPatientId(id)
 //    }
-
-    @GetMapping("/glucoses/{id}")
-    fun getLastGlucoseByPatientId(@PathVariable id: Int): List<GlucoseObservation> {
-        return hfireService.getLastTenGlucoseObservations(id)
-    }
+//
+//    @GetMapping("/glucoses/{id}")
+//    fun getLastGlucoseByPatientId(@PathVariable id: Int): List<GlucoseObservation> {
+//        return hfireService.getLastTenGlucoseObservations(id)
+//    }
 
     @PostMapping("/recordglucose/{id}")
     fun recordLastGlucoseByPatientId(
         @PathVariable id: Int,
         @RequestBody glucose: GlucoseObservation
     ): GlucoseObservation {
-        return hfireService.recordGlucoseObservation(id, glucose)
+        return hfirSimulationService.recordGlucoseObservation(id, glucose)
     }
 
     //IRIS
@@ -150,15 +150,15 @@ class PatientController(
     }
 
     @GetMapping("/meds/{id}")
-    fun meds(): Element {
-        val presc = hfirSimulationService.getPatientPrescriptions(1)
+    fun meds(@PathVariable id: Int): Element {
+        val prescriptions = hfirSimulationService.getPatientPrescriptions(id)
         return Element(
             title = "Meds",
             headerContent = "Prescriptions",
             create = "Item",
             contents = listOf(
                 Content(
-                    header = presc[0].medicine ?: "",
+                    header = prescriptions[0].medicine ?: "",
                     icon = null,
                     btn = false,
                     border = true,
@@ -170,24 +170,24 @@ class PatientController(
                     text = listOf(
                         TextHeader(
                             textHeader = "Dosage:",
-                            textContent = "${presc[0].medicine} tablet"
+                            textContent = "${prescriptions[0].medicine} tablet"
                         ),
                         TextHeader(
                             textHeader = "Times a day:",
-                            textContent = "1"
+                            textContent = prescriptions[0].period.toString()
                         ),
                         TextHeader(
                             textHeader = "Prescribed by:",
-                            textContent = "Mr myself"
+                            textContent = prescriptions[0].doctorName ?: ""
                         ),
                         TextHeader(
                             textHeader = "Date of prescription",
-                            textContent = "12/01/2021"
+                            textContent = prescriptions[0].time ?: ""
                         )
                     )
                 ),
                 Content(
-                    header = presc[1].medicine ?: "",
+                    header = prescriptions[1].medicine ?: "",
                     icon = null,
                     btn = false,
                     border = true,
@@ -199,19 +199,19 @@ class PatientController(
                     text = listOf(
                         TextHeader(
                             textHeader = "Dosage:",
-                            textContent = "${presc[1].medicine} tablet"
+                            textContent = "${prescriptions[1].medicine} tablet"
                         ),
                         TextHeader(
                             textHeader = "Times a day:",
-                            textContent = "1"
+                            textContent = prescriptions[1].period.toString()
                         ),
                         TextHeader(
                             textHeader = "Prescribed by:",
-                            textContent = "Mr myself"
+                            textContent = prescriptions[1].doctorName ?: ""
                         ),
                         TextHeader(
                             textHeader = "Date of prescription",
-                            textContent = "12/01/2021"
+                            textContent = prescriptions[1].time ?: ""
                         )
                     )
                 )
@@ -220,8 +220,10 @@ class PatientController(
     }
 
     @GetMapping("/encounters/{id}")
-    fun encounters(): Element {
-        val encounters = hfirSimulationService.patientEncounters(1)
+    fun encounters(@PathVariable id: Int): Element {
+        val encounters = hfirSimulationService.patientEncounters(id)
+        val labTests = hfirSimulationService.getPatientLabTests(id)
+        val appointment = hfirSimulationService.getPatientAppointments(id)
         return Element(
             title = "Doctors",
             headerContent = "Consultations",
@@ -240,10 +242,10 @@ class PatientController(
                     text = listOf(
                         TextHeader(
                             textHeader = "",
-                            textContent = encounters[0].start?.take(10) ?: ""
+                            textContent = appointment.start.toString()
                         ),
                         TextHeader(
-                            textHeader = encounters[0].hospitalName ?: "",
+                            textHeader = appointment.hospitalName,
                             textContent = ""
                         )
                     ),
@@ -300,11 +302,11 @@ class PatientController(
                         ),
                         TextHeader(
                             textHeader = "Date of last test",
-                            textContent = "12/01/2021"
+                            textContent = labTests.filter { it.name.equals("Triglyceride")}[0].time
                         ),
                         TextHeader(
                             textHeader = "Result",
-                            textContent = "134.61 mg/dL"
+                            textContent = "${labTests.filter { it.name.equals("Triglyceride")}[0].result} mg/dL"
                         )
                     ),
                 ),
@@ -455,6 +457,9 @@ class PatientController(
 
     @GetMapping("/today/{id}")
     fun dashBoardForPatient(@PathVariable id: Int): Element {
+        val glucose = hfirSimulationService.getLastTenGlucoseObservations(id)
+        val appointment = hfirSimulationService.getPatientAppointments(id)
+        val lastPrescription = hfirSimulationService.getPatientPrescriptions(id).takeLast(1)[0]
         return Element(
             title = "Today",
             headerContent = "",
@@ -472,7 +477,7 @@ class PatientController(
                     ),
                     text = listOf(
                         TextHeader(
-                            textHeader = "5.5",
+                            textHeader = glucose.takeLast(1).toString(),
                             textContent = "mmol/l"
                         )
                     )
@@ -489,12 +494,12 @@ class PatientController(
                     ),
                     text = listOf(
                         TextHeader(
-                            textHeader = "12/12/2022",
-                            textContent = "11:45"
+                            textHeader = appointment.start.toString(),
+                            textContent = "10:45"
                         ),
                         TextHeader(
                             textHeader = "Massachussets",
-                            textContent = "General Hospital"
+                            textContent = appointment.hospitalName
                         )
                     )
                 ),
@@ -511,7 +516,7 @@ class PatientController(
                     text = listOf(
                         TextHeader(
                             textHeader = "",
-                            textContent = "Hydrochloorothiziade 12,5 MG"
+                            textContent = lastPrescription.medicine ?: ""
                         ),
                         TextHeader(
                             textHeader = "Mark as done",
@@ -525,17 +530,21 @@ class PatientController(
 
     @GetMapping("/reports/{id}")
     fun reportsForPatient(@PathVariable id: Int): Element {
-        val glucoses = hfireService.getLastTenGlucoseObservations(id)
+        val glucoses = hfirSimulationService.getLastTenGlucoseObservations(id)
+        val graphNodes = listOf<GraphNode>()
+        for (i in 0..8) {
+            GraphNode(
+                pointName = glucoses[i].time.toString(),
+                uv = 152,
+                pv = 80
+            )
+        }
         return Element(
             title = "Reports",
             headerContent = "Glucose",
             create = "Chart",
             graph = listOf(
-                GraphNode(
-                    pointName = "point",
-                    uv = 152,
-                    pv = 80
-                )
+
             ),
             contents = listOf()
         )

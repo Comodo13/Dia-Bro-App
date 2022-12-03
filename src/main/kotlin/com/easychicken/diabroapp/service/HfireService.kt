@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.client.exchange
 import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Service
 class HfireService(
@@ -33,7 +35,7 @@ class HfireService(
         val birth = map["birthDate"] as String
         val gender = map["gender"] as String
 
-        return Patient(persistedId, finalName, birth, gender)
+        return Patient(persistedId, finalName, birth, gender, listOf(), listOf(), listOf())
     }
 
 
@@ -130,26 +132,6 @@ class HfireService(
         )
     }
 
-    fun getLastTenGlucoseObservations(id: Int): List<GlucoseObservation> {
-        return listOf(
-            GlucoseObservation(4.5, Instant.now()),
-            GlucoseObservation(4.6, Instant.now().minusMillis(3600000)),
-            GlucoseObservation(4.7, Instant.now().minusMillis(3600000*2)),
-            GlucoseObservation(4.9, Instant.now().minusMillis(3600000*3)),
-            GlucoseObservation(4.8, Instant.now().minusMillis(3600000*4)),
-            GlucoseObservation(5.0, Instant.now().minusMillis(3600000*5)),
-            GlucoseObservation(4.6, Instant.now().minusMillis(3600000*6)),
-            GlucoseObservation(4.3, Instant.now().minusMillis(3600000*7)),
-            GlucoseObservation(4.0, Instant.now().minusMillis(3600000*8)),
-            GlucoseObservation(4.6, Instant.now().minusMillis(3600000*9)),
-            GlucoseObservation(4.9, Instant.now().minusMillis(3600000*10)),
-        )
-    }
-
-    fun recordGlucoseObservation(id: Int, glucose: GlucoseObservation): GlucoseObservation {
-        return glucose
-    }
-
 
     fun readMapFromHfire(id: Int, apiChunk: String): MutableMap<Any, Any> {
         val headers = org.springframework.http.HttpHeaders()
@@ -188,6 +170,11 @@ data class Patient(
     val fullName: String,
     val dateOfBirth: String,
     val gender: String,
+    val prescriptions: List<Prescription> = listOf(),
+    val labTests: List<LabTest> = listOf(),
+    val encounters: List<Encounter> = listOf(),
+    val glucoseObservations: List<GlucoseObservation> = listOf(),
+    val appointment: Appointment
 )
 
 data class Encounter(
@@ -204,4 +191,9 @@ data class Device(
 data class GlucoseObservation(
     val value: Double,
     val time: Instant
+)
+data class Appointment(
+    val start: LocalDate,
+    val hospitalName: String
+
 )
