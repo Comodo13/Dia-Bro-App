@@ -14,7 +14,7 @@ class HfirSimulationRepository {
     // My amazing Women's health dataset for 4 patients and 1 doctor :)
 
     final val practitioner = Practitioner()
-        .addName(HumanName().addGiven("Joel Evans"))
+        .addName(HumanName().addGiven("Jeffrey Clark"))
 
 
     fun getAllDevices(): List<Device> = listOf(

@@ -35,7 +35,9 @@ class HfireService(
         val birth = map["birthDate"] as String
         val gender = map["gender"] as String
 
-        return Patient(persistedId, finalName, birth, gender, listOf(), listOf(), listOf())
+        return Patient(persistedId, finalName, birth, gender, listOf(), listOf(), listOf(), listOf(), appointment = Appointment(
+            LocalDate.now(), "Santa Monica")
+        )
     }
 
 
