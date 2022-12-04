@@ -2,7 +2,7 @@
 Backend part of diabetis and pregnancy sypmtoms tracking app.
 
 Online Demo:
-http://34.116.168.221:3000/patient
+http://34.118.48.240:3000/patient
 
 Problem:
 Patients often dont write down their blood tests results. Forget to take medications, appoinment. They also loos track of health check ups.
