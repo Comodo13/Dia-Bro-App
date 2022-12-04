@@ -211,7 +211,7 @@ class PatientController(
                         ),
                         TextHeader(
                             textHeader = "Date of prescription",
-                            textContent = prescriptions[1].time ?: ""
+                            textContent = prescriptions[1].time?.take(10) ?: ""
                         )
                     )
                 )
@@ -242,10 +242,10 @@ class PatientController(
                     text = listOf(
                         TextHeader(
                             textHeader = "",
-                            textContent = appointment.start.toString()
+                            textContent = appointment?.start.toString()
                         ),
                         TextHeader(
-                            textHeader = appointment.hospitalName,
+                            textHeader = appointment?.hospitalName ?:"",
                             textContent = ""
                         )
                     ),
@@ -264,6 +264,10 @@ class PatientController(
                     text = listOf(
                         TextHeader(
                             textHeader = encounters[0].hospitalName ?: "",
+                            textContent = ""
+                        ),
+                        TextHeader(
+                            textHeader = encounters[0].start?.take(10) ?:"",
                             textContent = ""
                         )
                     ),
@@ -302,11 +306,11 @@ class PatientController(
                         ),
                         TextHeader(
                             textHeader = "Date of last test",
-                            textContent = labTests.filter { it.name.equals("Triglyceride")}[0].time
+                            textContent = labTests[0].name ?: ""
                         ),
                         TextHeader(
                             textHeader = "Result",
-                            textContent = "${labTests.filter { it.name.equals("Triglyceride")}[0].result} mg/dL"
+                            textContent = "${labTests[0].result} mg/dL"
                         )
                     ),
                 ),
@@ -385,11 +389,11 @@ class PatientController(
                     text = listOf(
                         TextHeader(
                             textHeader = "Remaining days:",
-                            textContent = "2/12/2022"
+                            textContent = "12"
                         ),
                         TextHeader(
                             textHeader = "Installed on a date:",
-                            textContent = "12"
+                            textContent = "2/12/2022"
                         )
                     )
                 ),
@@ -406,11 +410,11 @@ class PatientController(
                     text = listOf(
                         TextHeader(
                             textHeader = "Remaining days:",
-                            textContent = "2/12/2022"
+                            textContent = "12"
                         ),
                         TextHeader(
                             textHeader = "Installed on a date:",
-                            textContent = "12"
+                            textContent = "2/12/2022"
                         )
                     )
                 )
@@ -494,17 +498,17 @@ class PatientController(
                     ),
                     text = listOf(
                         TextHeader(
-                            textHeader = appointment.start.toString(),
+                            textHeader = appointment?.start.toString(),
                             textContent = "10:45"
                         ),
                         TextHeader(
                             textHeader = "Massachussets",
-                            textContent = appointment.hospitalName
+                            textContent = appointment?.hospitalName ?: ""
                         )
                     )
                 ),
                 Content(
-                    header = "Stay Don't forget to take your medications",
+                    header = "Don't forget to take your medications",
                     icon = null,
                     btn = false,
                     border = true,
@@ -531,22 +535,33 @@ class PatientController(
     @GetMapping("/reports/{id}")
     fun reportsForPatient(@PathVariable id: Int): Element {
         val glucoses = hfirSimulationService.getLastTenGlucoseObservations(id)
-        val graphNodes = listOf<GraphNode>()
+        //val insulins = irisService.getInsulinRecordsByPatientId(id)
+        val glucoseGraph = mutableListOf<GraphNode>()
+        val insulinGraph = mutableListOf<GraphNode>()
         for (i in 0..8) {
-            GraphNode(
+            glucoseGraph.add(
+                GraphNode(
                 pointName = glucoses[i].time.toString(),
-                uv = 152,
-                pv = 80
-            )
+                uv = glucoses[i].value,
+                pv = 0.0
+            ))
         }
+       // insulins.forEach {
+       //     insulinGraph.add(GraphNode(it.created.toString().take(10),it.insulinDose?.toDouble() ?: 0.0, 0.0))
+      //  }
         return Element(
             title = "Reports",
             headerContent = "Glucose",
             create = "Chart",
-            graph = listOf(
-
-            ),
-            contents = listOf()
+            graph = listOf(glucoseGraph, insulinGraph),
+            contents = listOf(
+                Content(
+                    header = "",
+                    "",
+                    mark = Mark(),
+                    text = listOf()
+                )
+            )
         )
     }
 
@@ -588,8 +603,8 @@ class PatientController(
 
     data class GraphNode(
         val pointName: String,
-        val uv: Int,
-        val pv: Int,
+        val uv: Double,
+        val pv: Double,
     )
 
 
@@ -614,7 +629,7 @@ class PatientController(
         val headerContent: String,
         val create: String,
         val contents: List<Content>,
-        val graph: List<GraphNode> = listOf()
+        val graph: List<List<GraphNode>> = listOf()
 
     )
 

@@ -10,6 +10,7 @@ import java.time.Instant
 @Repository
 class IRISservice {
 
+    //127.0.0.1
     fun getConnection(): Connection {
         val url = "jdbc:IRIS://127.0.0.1:1972/USER"
         val ds = IRISDataSource()
@@ -121,8 +122,7 @@ class IRISservice {
             val name = resultSet.getString("name")
             val birth = resultSet.getString("birth")
             val gender = resultSet.getString("gender")
-            return  Patient(id.toString(), name, birth, gender
-            )
+            return  Patient(id.toString(), name, birth, gender)
         }
         throw Exception("didnt found patient with id $id")
     }

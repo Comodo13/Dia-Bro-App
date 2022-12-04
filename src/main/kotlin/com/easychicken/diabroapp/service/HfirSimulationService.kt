@@ -39,7 +39,7 @@ class HfirSimulationService(
     fun getPatientLabTests(id: Int): List<LabTest> {
         return getPatientsById(id).labTests
     }
-    fun getPatientAppointments(id: Int): Appointment {
+    fun getPatientAppointments(id: Int): Appointment? {
         return getPatientsById(id).appointment
     }
     fun getLastTenGlucoseObservations(id: Int): List<GlucoseObservation> {

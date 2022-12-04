@@ -174,7 +174,7 @@ data class Patient(
     val labTests: List<LabTest> = listOf(),
     val encounters: List<Encounter> = listOf(),
     val glucoseObservations: List<GlucoseObservation> = listOf(),
-    val appointment: Appointment
+    val appointment: Appointment? = null
 )
 
 data class Encounter(
