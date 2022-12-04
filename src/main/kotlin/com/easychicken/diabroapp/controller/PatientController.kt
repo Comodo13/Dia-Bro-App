@@ -129,7 +129,7 @@ class PatientController(
                     mark = Mark(
                         header = "green",
                         text = "stone",
-                        space = "spaceAround",
+                        space = "spaceBetween",
                     ),
                     text = listOf(
                         TextHeader(
@@ -200,7 +200,7 @@ class PatientController(
                     text = listOf(
                         TextHeader(
                             textHeader = "Dosage:",
-                            textContent = "${prescriptions[1].medicine} tablet"
+                            textContent = "${prescriptions[1].dosage} tablet"
                         ),
                         TextHeader(
                             textHeader = "Times a day:",
@@ -231,7 +231,7 @@ class PatientController(
             create = "Item",
             contents = listOf(
                 Content(
-                    header = "Your next doctor",
+                    header = "Your next doctor appointment",
                     icon = null,
                     btn = false,
                     border = true,
@@ -565,7 +565,7 @@ class PatientController(
                 GraphNode(
                 pointName = glucoses[i].time.toString(),
                 before = glucoses[i].value,
-                after = 0.0
+                after = glucoses[i].value - 0.9
             ))
         }
 //        insulins.forEach {
@@ -596,6 +596,7 @@ class PatientController(
 //        } catch (e: Exception) {
 //            println(e)
 //        }
+
         val glucoseGraph = mutableListOf<GraphNode>()
         val insulinGraph = mutableListOf<GraphNode>()
         for (i in 0..8) {
@@ -603,7 +604,7 @@ class PatientController(
                 GraphNode(
                     pointName = glucoses[i].time.toString().take(10),
                     before = glucoses[i].value,
-                    after = 0.0
+                    after = glucoses[i].value-0.9
                 ))
         }
 //        insulins.forEach {
@@ -630,7 +631,7 @@ class PatientController(
         return Element(
             title = "Baby journal",
             headerContent = "Prescriptions",
-            create = "Item",
+            create = "Baby journal",
             contents = listOf(
                 Content(
                     header = "Doctors Exam",
@@ -660,7 +661,6 @@ class PatientController(
             )
         )
     }
-
 
     data class GraphNode(
         val pointName: String,
