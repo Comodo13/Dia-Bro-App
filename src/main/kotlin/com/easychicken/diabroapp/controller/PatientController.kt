@@ -564,8 +564,8 @@ class PatientController(
             glucoseGraph.add(
                 GraphNode(
                 pointName = glucoses[i].time.toString(),
-                uv = glucoses[i].value,
-                pv = 0.0
+                before = glucoses[i].value,
+                after = 0.0
             ))
         }
 //        insulins.forEach {
@@ -601,9 +601,9 @@ class PatientController(
         for (i in 0..8) {
             glucoseGraph.add(
                 GraphNode(
-                    pointName = glucoses[i].time.toString(),
-                    uv = glucoses[i].value,
-                    pv = 0.0
+                    pointName = glucoses[i].time.toString().take(10),
+                    before = glucoses[i].value,
+                    after = 0.0
                 ))
         }
 //        insulins.forEach {
@@ -664,8 +664,8 @@ class PatientController(
 
     data class GraphNode(
         val pointName: String,
-        val uv: Double,
-        val pv: Double,
+        val before: Double,
+        val after: Double,
     )
 
 
