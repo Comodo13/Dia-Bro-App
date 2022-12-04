@@ -182,7 +182,7 @@ class PatientController(
                         ),
                         TextHeader(
                             textHeader = "Date of prescription",
-                            textContent = prescriptions[0].time ?: ""
+                            textContent = prescriptions[0].time?.take(10) ?: ""
                         )
                     )
                 ),
@@ -306,7 +306,7 @@ class PatientController(
                         ),
                         TextHeader(
                             textHeader = "Date of last test",
-                            textContent = labTests[0].name ?: ""
+                            textContent = labTests[0].time.take(10) ?: ""
                         ),
                         TextHeader(
                             textHeader = "Result",
@@ -328,6 +328,14 @@ class PatientController(
                         TextHeader(
                             textHeader = "Recomendation 1 per year",
                             textContent = "0/1"
+                        ),
+                        TextHeader(
+                            textHeader = "Date of last test",
+                            textContent = labTests[1].time.take(10) ?: ""
+                        ),
+                        TextHeader(
+                            textHeader = "Result",
+                            textContent = "${labTests[1].result} mg/dL"
                         )
                     ),
                 ),
@@ -345,6 +353,14 @@ class PatientController(
                         TextHeader(
                             textHeader = "Recomendation 1 per year",
                             textContent = "0/1"
+                        ),
+                        TextHeader(
+                            textHeader = "Date of last test",
+                            textContent = labTests[2].time.take(10) ?: ""
+                        ),
+                        TextHeader(
+                            textHeader = "Result",
+                            textContent = "${labTests[2].result} mg/dL"
                         )
                     ),
                 ),
@@ -481,7 +497,7 @@ class PatientController(
                     ),
                     text = listOf(
                         TextHeader(
-                            textHeader = glucose.takeLast(1).toString(),
+                            textHeader = glucose.takeLast(1)[0].value.toString(),
                             textContent = "mmol/l"
                         )
                     )

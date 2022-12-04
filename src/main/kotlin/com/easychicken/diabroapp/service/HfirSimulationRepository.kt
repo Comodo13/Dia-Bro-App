@@ -51,7 +51,7 @@ class HfirSimulationRepository {
                         practitioner.name[0].givenAsSingleString
                     ),
                     Prescription(
-                        "amLODIPine 5 MG",
+                        "amLODIPine 25 MG",
                         LocalDateTime.now().minusDays(20).toString(),
                         frequency = "2",
                         period = "1",
@@ -122,7 +122,7 @@ class HfirSimulationRepository {
                 gender = "female",
                 prescriptions = listOf(
                     Prescription(
-                        "Olmesartan medoxomil 20 MG Oral Tablet",
+                        "Zodac 20 MG Oral Tablet",
                         LocalDateTime.now().minusDays(10).toString(),
                         frequency = "3",
                         period = "1",
