@@ -3,6 +3,7 @@ package com.easychicken.diabroapp.controller
 import com.easychicken.diabroapp.service.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.lang.Exception
 import javax.el.ELManager
 
 @CrossOrigin
@@ -15,32 +16,32 @@ class PatientController(
 
     ) {
 
-//    @GetMapping("/{id}")
-//    fun getPatientById(@PathVariable id: Int): ResponseEntity<Patient> {
-//        return ResponseEntity.ok(hfireService.getPatient(id, "/Patient/"))
-//    }
-//    @GetMapping("/meds/{id}")
-//    fun getMedsByPatientId(@PathVariable id: Int): List<Prescription> {
-//        return hfireService.getPatientPrescriptions(id, "/MedicationRequest?patient=")
-//    }
-//    @GetMapping("/tests/{id}")
-//    fun getTestsByPatientId(@PathVariable id: Int): List<LabTest> {
-//        return hfireService.getLaboratoryTestByPatientId(id, "/DiagnosticReport?patient=")
-//    }
-//    @GetMapping("/encounters/{id}")
-//    fun getAppointmentsByPatientId(@PathVariable id: Int):  List<Encounter>  {
-//        return hfireService.getAppointmentsByPatientId(id, "/Encounter?patient=")
-//    }
-//
-//    @GetMapping("/devices/{id}")
-//    fun getDevicesByPatientId(@PathVariable id: Int):  List<Device>  {
-//        return hfireService.getDevicesByPatientId(id)
-//    }
-//
-//    @GetMapping("/glucoses/{id}")
-//    fun getLastGlucoseByPatientId(@PathVariable id: Int): List<GlucoseObservation> {
-//        return hfireService.getLastTenGlucoseObservations(id)
-//    }
+    @GetMapping("/rest/{id}")
+    fun getPatientById(@PathVariable id: Int): ResponseEntity<Patient> {
+        return ResponseEntity.ok(hfireService.getPatient(id, "/Patient/"))
+    }
+    @GetMapping("/rest/meds/{id}")
+    fun getMedsByPatientId(@PathVariable id: Int): List<Prescription> {
+        return hfireService.getPatientPrescriptions(id, "/MedicationRequest?patient=")
+    }
+    @GetMapping("/rest/tests/{id}")
+    fun getTestsByPatientId(@PathVariable id: Int): List<LabTest> {
+        return hfireService.getLaboratoryTestByPatientId(id, "/DiagnosticReport?patient=")
+    }
+    @GetMapping("/rest/encounters/{id}")
+    fun getAppointmentsByPatientId(@PathVariable id: Int):  List<Encounter>  {
+        return hfireService.getAppointmentsByPatientId(id, "/Encounter?patient=")
+    }
+
+    @GetMapping("/rest/devices/{id}")
+    fun getDevicesByPatientId(@PathVariable id: Int):  List<Device>  {
+        return hfireService.getDevicesByPatientId(id)
+    }
+
+    @GetMapping("/rest/glucoses/{id}")
+    fun getLastGlucoseByPatientId(@PathVariable id: Int): List<GlucoseObservation> {
+        return hfirSimulationService.getLastTenGlucoseObservations(id)
+    }
 
     @PostMapping("/recordglucose/{id}")
     fun recordLastGlucoseByPatientId(
@@ -108,22 +109,22 @@ class PatientController(
         return ResponseEntity.ok(irisService.getAllPatients())
     }
 
-    @GetMapping("/insulin/{id}")
+    @GetMapping("/insulin1/{id}")
     fun getInsulinByPatientId(@PathVariable id: Int): ResponseEntity<List<InsulinRecord>> {
         return ResponseEntity.ok(irisService.getInsulinRecordsByPatientId(id))
     }
 
-    @GetMapping("/insulin1")
+    @GetMapping("/insulin/{id}")
     fun ins(): Element {
         return Element(
-            title = "Doctors",
+            title = "Insulin",
             headerContent = "Prescriptions",
             create = "Item",
             contents = listOf(
                 Content(
                     header = "Doctors Exam",
                     icon = null,
-                    btn = true,
+                    btn = false,
                     border = true,
                     mark = Mark(
                         header = "green",
@@ -497,7 +498,7 @@ class PatientController(
                     ),
                     text = listOf(
                         TextHeader(
-                            textHeader = glucose.takeLast(1)[0].value.toString(),
+                            textHeader = "        " + glucose.takeLast(1)[0].value.toString(),
                             textContent = "mmol/l"
                         )
                     )
@@ -526,7 +527,7 @@ class PatientController(
                 Content(
                     header = "Don't forget to take your medications",
                     icon = null,
-                    btn = false,
+                    btn = true,
                     border = true,
                     mark = Mark(
                         header = "red",
@@ -551,7 +552,12 @@ class PatientController(
     @GetMapping("/reports/{id}")
     fun reportsForPatient(@PathVariable id: Int): Element {
         val glucoses = hfirSimulationService.getLastTenGlucoseObservations(id)
-        //val insulins = irisService.getInsulinRecordsByPatientId(id)
+//        var insulins = listOf<InsulinRecord>()
+//        try {
+//            insulins = irisService.getInsulinRecordsByPatientId(id)
+//        } catch (e: Exception) {
+//            println(e)
+//        }
         val glucoseGraph = mutableListOf<GraphNode>()
         val insulinGraph = mutableListOf<GraphNode>()
         for (i in 0..8) {
@@ -562,14 +568,52 @@ class PatientController(
                 pv = 0.0
             ))
         }
-       // insulins.forEach {
-       //     insulinGraph.add(GraphNode(it.created.toString().take(10),it.insulinDose?.toDouble() ?: 0.0, 0.0))
-      //  }
+//        insulins.forEach {
+//            insulinGraph.add(GraphNode(it.created.toString().take(10),it.insulinDose?.toDouble() ?: 0.0, 0.0))
+//        }
         return Element(
             title = "Reports",
             headerContent = "Glucose",
             create = "Chart",
-            graph = listOf(glucoseGraph, insulinGraph),
+            graph = listOf(glucoseGraph),
+            contents = listOf(
+                Content(
+                    header = "",
+                    "",
+                    mark = Mark(),
+                    text = listOf()
+                )
+            )
+        )
+    }
+
+    @GetMapping("/patient/{id}")
+    fun reportsByPatientForDoctor(@PathVariable id: Int): Element {
+        val glucoses = hfirSimulationService.getLastTenGlucoseObservations(id)
+//        var insulins = listOf<InsulinRecord>()
+//        try {
+//            insulins = irisService.getInsulinRecordsByPatientId(id)
+//        } catch (e: Exception) {
+//            println(e)
+//        }
+        val glucoseGraph = mutableListOf<GraphNode>()
+        val insulinGraph = mutableListOf<GraphNode>()
+        for (i in 0..8) {
+            glucoseGraph.add(
+                GraphNode(
+                    pointName = glucoses[i].time.toString(),
+                    uv = glucoses[i].value,
+                    pv = 0.0
+                ))
+        }
+//        insulins.forEach {
+//            insulinGraph.add(GraphNode(it.created.toString().take(10),it.insulinDose?.toDouble() ?: 0.0, 0.0))
+//        }
+        return Element(
+            title = "Patient$id",
+            headerContent = "Glucose",
+            create = "Chart",
+            graph = listOf(glucoseGraph),
             contents = listOf(
                 Content(
                     header = "",
@@ -616,6 +660,7 @@ class PatientController(
             )
         )
     }
+
 
     data class GraphNode(
         val pointName: String,
