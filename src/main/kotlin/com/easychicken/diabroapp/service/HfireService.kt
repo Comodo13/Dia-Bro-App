@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service
 import org.springframework.web.client.exchange
 import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 @Service
 class HfireService(

@@ -30,7 +30,6 @@ class IRISservice {
                 "CREATE TABLE patient_notes(note_id int PRIMARY KEY AUTO_INCREMENT, patient_id int, weight varchar(30), states varchar(100), created varchar(30), blood_press varchar(30));")
         stmt.execute(tableSql)
         con.close()
-        //"note varchar(300), mood varchar(20), condition varchar(30));
     }
     fun createPatientTable() {
         val con = getConnection()
@@ -51,22 +50,18 @@ class IRISservice {
     //inserts
     fun insertPatient(dto: Patient): String {
         val con = getConnection()
-        // val stmt = con.createStatement()
         val insertSql = "INSERT INTO patients(patient_id, name, birth, gender) VALUES(?,?,?,?)"
         val myStatement: PreparedStatement = con.prepareStatement(insertSql)
         myStatement.setInt(1, dto.id.toInt())
         myStatement.setString(2, dto.fullName)
         myStatement.setString(3, dto.dateOfBirth)
         myStatement.setString(4, dto.gender)
-        // myStatement.setInt(4, shares)
-        // myStatement.setString(5, timestamp.toString())
         myStatement.execute()
         con.close()
         return "inserted patient with id ${dto.id}"
     }
     fun insertPatientNote(dto: PatientNoteCreateRequest): String {
         val con = getConnection()
-        // val stmt = con.createStatement()
         val insertSql = "INSERT INTO patient_notes(patient_id, weight, states, created, blood_press) VALUES(?,?,?,?,?)"
         val myStatement: PreparedStatement = con.prepareStatement(insertSql)
         myStatement.setInt(1, dto.patientId)
@@ -81,7 +76,6 @@ class IRISservice {
     }
     fun insertInsulin(dto: InsulinCreateRequest): String {
         val con = getConnection()
-        // val stmt = con.createStatement()
         val insertSql = "INSERT INTO insulin(patient_id, dose, type, created) VALUES(?,?,?,?)"
         val myStatement: PreparedStatement = con.prepareStatement(insertSql)
         myStatement.setInt(1, dto.patientId)
@@ -109,7 +103,6 @@ class IRISservice {
             notes.add(PatientNote(id, patientId, weight, states, created, bloodPressure))
         }
         return notes
-        throw Exception( "didnt found patient with patientID $patientId")
     }
 
 

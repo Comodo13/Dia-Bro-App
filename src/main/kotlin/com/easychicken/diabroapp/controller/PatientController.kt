@@ -669,22 +669,6 @@ class PatientController(
     )
 
 
-//
-//    @GetMapping("/meds/{id}")
-//    fun getMedsByPatientId(@PathVariable id: Int): List<Prescription> {
-//        return hfireService.getPatientPrescriptions(id, "/MedicationRequest?patient=")
-//    }
-
-//    @GetMapping("/encounters/{id}")
-//    fun getAppointmentsByPatientId(@PathVariable id: Int):  List<Encounter>  {
-//        return hfireService.getAppointmentsByPatientId(id, "/Encounter?patient=")
-//    }
-
-//    @GetMapping("/devices/{id}")
-//    fun getDevicesByPatientId(@PathVariable id: Int):  List<Device>  {
-//        return hfireService.getDevicesByPatientId(id)
-//    }
-
     data class Element(
         val title: String,
         val headerContent: String,
