@@ -171,7 +171,7 @@ class PatientController(
                     text = listOf(
                         TextHeader(
                             textHeader = "Dosage:",
-                            textContent = "${prescriptions[0].medicine} tablet"
+                            textContent = "${prescriptions[0].dosage} tablet"
                         ),
                         TextHeader(
                             textHeader = "Times a day:",
@@ -322,8 +322,8 @@ class PatientController(
                     border = true,
                     mark = Mark(
                         header = "green",
-                        text = "red",
-                        space = "spaceAround",
+                        text = "stone",
+                        space = "spaceBetween",
                     ),
                     text = listOf(
                         TextHeader(
@@ -347,8 +347,8 @@ class PatientController(
                     border = true,
                     mark = Mark(
                         header = "green",
-                        text = "red",
-                        space = "spaceAround",
+                        text = "stone",
+                        space = "spaceBetween",
                     ),
                     text = listOf(
                         TextHeader(
